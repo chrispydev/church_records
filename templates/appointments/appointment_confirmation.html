@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Appointment Confirmation - Church Records{% endblock %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto" id="printable-content">
+        <div class="alert alert-success mb-4">
+            <h4 class="alert-heading">Appointment Scheduled Successfully!</h4>
+            <p>Your appointment has been received and is currently pending approval. You will receive a confirmation email shortly.</p>
+            <hr>
+            <p class="mb-0">Please save this page for your records or use the print button below.</p>
+        </div>
+        
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Appointment Details</h5>
+                <span class="badge bg-warning text-dark">{{ appointment.get_status_display }}</span>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Confirmation Number:</div>
+                    <div class="col-md-8">AP-{{ appointment.id }}</div>
+                </div>
+                
+                <h5 class="border-bottom pb-2 mb-3">Contact Information</h5>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Name:</div>
+                    <div class="col-md-8">{{ appointment.name }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Email:</div>
+                    <div class="col-md-8">{{ appointment.email }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Phone:</div>
+                    <div class="col-md-8">{{ appointment.phone }}</div>
+                </div>
+                
+                <h5 class="border-bottom pb-2 mb-3 mt-4">Appointment Information</h5>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Date:</div>
+                    <div class="col-md-8">{{ appointment.appointment_date|date:"l, F d, Y" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Time:</div>
+                    <div class="col-md-8">{{ appointment.appointment_time|time:"g:i A" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Purpose:</div>
+                    <div class="col-md-8">{{ appointment.purpose }}</div>
+                </div>
+                
+                {% if appointment.additional_notes %}
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Additional Notes:</div>
+                    <div class="col-md-8">{{ appointment.additional_notes }}</div>
+                </div>
+                {% endif %}
+                
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Created:</div>
+                    <div class="col-md-8">{{ appointment.created_at|date:"F d, Y" }} at {{ appointment.created_at|time:"g:i A" }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow mt-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">What Happens Next?</h5>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li>Your appointment request has been submitted and is awaiting approval.</li>
+                    <li>You will receive an email confirmation at <strong>{{ appointment.email }}</strong>.</li>
+                    <li>Once your appointment is approved, you will receive another email notification.</li>
+                    <li>Please arrive 5-10 minutes before your scheduled appointment time.</li>
+                    <li>If you need to cancel or reschedule, please contact us as soon as possible.</li>
+                </ol>
+                
+                <div class="alert alert-secondary mt-3">
+                    <h6 class="alert-heading">Contact Information</h6>
+                    <p>If you have any questions or need to make changes to your appointment, please contact us:</p>
+                    <ul class="mb-0">
+                        <li>Phone: <strong>(123) 456-7890</strong></li>
+                        <li>Email: <strong>appointments@churchrecords.org</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-8 mx-auto">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+            <a href="{% url 'appointment-create' %}" class="btn btn-primary">
+                Book Another Appointment
+            </a>
+            <button onclick="window.print();" class="btn btn-secondary">
+                <i class="bi bi-printer"></i> Print Confirmation
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #printable-content, #printable-content * {
+            visibility: visible;
+        }
+        #printable-content {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        .card {
+            border: 1px solid #ddd !important;
+            margin-bottom: 20px !important;
+        }
+        .card-header {
+            background-color: #f8f9fa !important;
+            color: #212529 !important;
+            border-bottom: 1px solid #ddd !important;
+        }
+        .badge {
+            border: 1px solid #212529 !important;
+            color: #212529 !important;
+        }
+    }
+</style>
+{% endblock %}
+

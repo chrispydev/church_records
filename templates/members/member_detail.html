@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ member.name }} - Church Records{% endblock %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">Member Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Name:</div>
+                    <div class="col-md-8">{{ member.name }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Email:</div>
+                    <div class="col-md-8">{{ member.email }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Room Number:</div>
+                    <div class="col-md-8">{{ member.room_number }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Telephone Number:</div>
+                    <div class="col-md-8">{{ member.telephone_number }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Registration Date:</div>
+                    <div class="col-md-8">{{ member.created_at|date:"F d, Y H:i" }}</div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <a href="{% url 'member-list' %}" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

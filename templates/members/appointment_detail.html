@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Appointment Details - Church Records{% endblock %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Appointment Details</h5>
+                
+                <!-- Status Badge -->
+                {% if appointment.status == 'pending' %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                {% elif appointment.status == 'approved' %}
+                    <span class="badge bg-success">Approved</span>
+                {% elif appointment.status == 'cancelled' %}
+                    <span class="badge bg-danger">Cancelled</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Member:</div>
+                    <div class="col-md-8">{{ appointment.member.name }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Meeting With:</div>
+                    <div class="col-md-8">{{ appointment.meeting_person }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Date:</div>
+                    <div class="col-md-8">{{ appointment.appointment_date|date:"F d, Y" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Time:</div>
+                    <div class="col-md-8">{{ appointment.time_slot.time_slot|time:"g:i A" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Status:</div>
+                    <div class="col-md-8">
+                        {% if appointment.status == 'pending' %}
+                            <span class="text-warning">Pending Approval</span>
+                        {% elif appointment.status == 'approved' %}
+                            <span class="text-success">Approved</span>
+                        {% elif appointment.status == 'cancelled' %}
+                            <span class="text-danger">Cancelled</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Created On:</div>
+                    <div class="col-md-8">{{ appointment.created_at|date:"F d, Y" }} at {{ appointment.created_at|time:"g:i A" }}</div>
+                </div>
+                
+                {% if appointment.status != 'cancelled' %}
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Day of Week:</div>
+                    <div class="col-md-8">{{ appointment.time_slot.get_day_of_week_display }}</div>
+                </div>
+                
+                <!-- Additional information for active appointments -->
+                <div class="alert alert-info">
+                    <h6 class="alert-heading">Appointment Information</h6>
+                    <p class="mb-0">Please arrive 5 minutes before your scheduled time. If you need to cancel or reschedule, please do so at least 24 hours in advance.</p>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a href="{% url 'member-detail' member.pk %}" class="btn btn-secondary">
+                    Back to Member
+                </a>
+                <div>
+                    <a href="{% url 'appointment-list' member.pk %}" class="btn btn-info me-2">
+                        All Appointments
+                    </a>
+                    
+                    {% if appointment.can_cancel %}
+                    <form method="post" action="{% url 'appointment-cancel' member.pk appointment.pk %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                            Cancel Appointment
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
