@@ -19,12 +19,15 @@ from django.urls import path, include
 from django.shortcuts import redirect
 
 # Simple view to redirect root to appointments
-def home_redirect(request):
-    return redirect('appointment-create')
+
+
+# def home_redirect(request):
+#     return redirect('appointment-create')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_redirect, name='home'),
+    # path('', home_redirect, name='home'),
     path('members/', include('members.urls')),
-    path('appointments/', include('appointments.urls')),
+    path('book-appointment/', include('appointments.urls')),
 ]
