@@ -46,11 +46,35 @@
                     </div>
                     
                     <div class="mb-3">
+                        <label for="{{ form.hall_or_hostel.id_for_label }}" class="form-label">Hall/Hostel</label>
+                        {{ form.hall_or_hostel }}
+                        {% if form.hall_or_hostel.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.hall_or_hostel.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
                         <label for="{{ form.room_number.id_for_label }}" class="form-label">Room Number</label>
                         {{ form.room_number }}
                         {% if form.room_number.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.room_number.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.room_number.id_for_label }}" class="form-label">Year Of Enrollment</label>
+                        {{ form.year_of_enrollment }}
+                        {% if form.year_of_enrollment.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.year_of_enrollment.errors %}
                                     {{ error }}
                                 {% endfor %}
                             </div>
